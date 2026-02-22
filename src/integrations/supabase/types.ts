@@ -188,6 +188,7 @@ export type Database = {
           id: string
           link: string | null
           priority: string
+          start_date: string | null
           task_name: string
           updated_at: string
           user_id: string
@@ -200,6 +201,7 @@ export type Database = {
           id?: string
           link?: string | null
           priority?: string
+          start_date?: string | null
           task_name: string
           updated_at?: string
           user_id: string
@@ -212,6 +214,7 @@ export type Database = {
           id?: string
           link?: string | null
           priority?: string
+          start_date?: string | null
           task_name?: string
           updated_at?: string
           user_id?: string

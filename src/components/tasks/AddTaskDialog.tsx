@@ -26,6 +26,7 @@ const isValidUrl = (str: string): boolean => {
 export function AddTaskDialog({ open, onOpenChange, category, onSuccess }: AddTaskDialogProps) {
   const [taskName, setTaskName] = useState("");
   const [priority, setPriority] = useState("medium");
+  const [startDate, setStartDate] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [link, setLink] = useState("");
   const [linkError, setLinkError] = useState("");
@@ -49,6 +50,7 @@ export function AddTaskDialog({ open, onOpenChange, category, onSuccess }: AddTa
       category,
       task_name: taskName,
       priority,
+      start_date: startDate || null,
       due_date: dueDate || null,
       completed: false,
     };
@@ -67,6 +69,7 @@ export function AddTaskDialog({ open, onOpenChange, category, onSuccess }: AddTa
       toast.success("Task created successfully");
       setTaskName("");
       setPriority("medium");
+      setStartDate("");
       setDueDate("");
       setLink("");
       setLinkError("");
@@ -106,7 +109,16 @@ export function AddTaskDialog({ open, onOpenChange, category, onSuccess }: AddTa
             </Select>
           </div>
           <div>
-            <Label htmlFor="dueDate">Due Date (Optional)</Label>
+            <Label htmlFor="startDate">Start Date (Optional)</Label>
+            <Input
+              id="startDate"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </div>
+          <div>
+            <Label htmlFor="dueDate">End Date (Optional)</Label>
             <Input
               id="dueDate"
               type="date"

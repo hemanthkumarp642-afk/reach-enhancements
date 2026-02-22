@@ -14,7 +14,246 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      job_applications: {
+        Row: {
+          applied_date: string | null
+          company: string
+          created_at: string
+          deadline: string | null
+          hr_email: string | null
+          id: string
+          job_url: string | null
+          notes: string | null
+          position: string
+          reminder_active: boolean | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          applied_date?: string | null
+          company: string
+          created_at?: string
+          deadline?: string | null
+          hr_email?: string | null
+          id?: string
+          job_url?: string | null
+          notes?: string | null
+          position: string
+          reminder_active?: boolean | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          applied_date?: string | null
+          company?: string
+          created_at?: string
+          deadline?: string | null
+          hr_email?: string | null
+          id?: string
+          job_url?: string | null
+          notes?: string | null
+          position?: string
+          reminder_active?: boolean | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      resumes: {
+        Row: {
+          created_at: string
+          file_name: string | null
+          file_path: string | null
+          file_size: number | null
+          id: string
+          last_updated: string
+          name: string
+          notes: string | null
+          status: string
+          tailored_for: string | null
+          usage_count: number | null
+          user_id: string
+          version: string
+        }
+        Insert: {
+          created_at?: string
+          file_name?: string | null
+          file_path?: string | null
+          file_size?: number | null
+          id?: string
+          last_updated?: string
+          name: string
+          notes?: string | null
+          status?: string
+          tailored_for?: string | null
+          usage_count?: number | null
+          user_id: string
+          version: string
+        }
+        Update: {
+          created_at?: string
+          file_name?: string | null
+          file_path?: string | null
+          file_size?: number | null
+          id?: string
+          last_updated?: string
+          name?: string
+          notes?: string | null
+          status?: string
+          tailored_for?: string | null
+          usage_count?: number | null
+          user_id?: string
+          version?: string
+        }
+        Relationships: []
+      }
+      revisions: {
+        Row: {
+          created_at: string
+          id: string
+          last_revised: string | null
+          link: string | null
+          next_revision: string
+          notes: string | null
+          priority: string
+          subject: string
+          times_revised: number | null
+          topic: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_revised?: string | null
+          link?: string | null
+          next_revision: string
+          notes?: string | null
+          priority?: string
+          subject: string
+          times_revised?: number | null
+          topic: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_revised?: string | null
+          link?: string | null
+          next_revision?: string
+          notes?: string | null
+          priority?: string
+          subject?: string
+          times_revised?: number | null
+          topic?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      tasks: {
+        Row: {
+          category: string
+          completed: boolean | null
+          created_at: string
+          due_date: string | null
+          id: string
+          link: string | null
+          priority: string
+          task_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string
+          completed?: boolean | null
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          link?: string | null
+          priority?: string
+          task_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          completed?: boolean | null
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          link?: string | null
+          priority?: string
+          task_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          created_at: string
+          daily_reminder_time: string | null
+          email_notifications: boolean | null
+          id: string
+          notification_email: string | null
+          theme: string | null
+          timezone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          daily_reminder_time?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          notification_email?: string | null
+          theme?: string | null
+          timezone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          daily_reminder_time?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          notification_email?: string | null
+          theme?: string | null
+          timezone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

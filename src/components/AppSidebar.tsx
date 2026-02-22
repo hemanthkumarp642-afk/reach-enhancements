@@ -71,7 +71,7 @@ export function AppSidebar() {
                   className={({ isActive }) =>
                   `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
                   isActive ?
-                  "bg-primary/10 text-primary font-semibold border-l-2 border-primary" :
+                  "bg-primary/10 text-primary font-semibold border-l-2 border-primary group-data-[collapsible=icon]:border-l-0 group-data-[collapsible=icon]:border-b-2" :
                   "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground"}`
                   }>
                     <item.icon className="h-4 w-4 shrink-0" />

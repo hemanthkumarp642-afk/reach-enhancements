@@ -1,14 +1,25 @@
 import { AuthGuard } from "@/components/AuthGuard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Plus, CheckSquare, ExternalLink } from "lucide-react";
+import { Plus, CheckSquare, ExternalLink, AlertTriangle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { AddTaskDialog } from "@/components/tasks/AddTaskDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { format } from "date-fns";
+import { format, isPast, isToday, addDays } from "date-fns";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const CATEGORIES = [
   { value: "daily", label: "Daily" },
@@ -23,8 +34,91 @@ const Tasks = () => {
   const [currentCategory, setCurrentCategory] = useState("daily");
   const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [highPriorityCount, setHighPriorityCount] = useState(0);
+  const [showHighPriorityAlert, setShowHighPriorityAlert] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean; taskId: string; taskName: string }>({ open: false, taskId: "", taskName: "" });
 
   useEffect(() => { loadTasks(); }, [currentCategory]);
+
+  // On mount, check for auto-escalation and high priority notifications
+  useEffect(() => {
+    escalatePriorities();
+  }, []);
+
+  const escalatePriorities = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { data: allTasks } = await supabase
+      .from("tasks")
+      .select("*")
+      .eq("user_id", user.id)
+      .eq("completed", false);
+
+    if (!allTasks) return;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let escalatedToHigh = 0;
+
+    for (const task of allTasks) {
+      if (!task.due_date) continue;
+
+      const dueDate = new Date(task.due_date);
+      dueDate.setHours(0, 0, 0, 0);
+
+      if (task.priority === "low" && isPast(dueDate) && !isToday(dueDate)) {
+        // Low priority + past end date → escalate to medium
+        await supabase.from("tasks").update({ priority: "medium" }).eq("id", task.id);
+      } else if (task.priority === "medium") {
+        // Medium priority + 1 day past end date → escalate to high
+        const oneDayAfterDue = addDays(dueDate, 1);
+        if (today >= oneDayAfterDue) {
+          await supabase.from("tasks").update({ priority: "high" }).eq("id", task.id);
+          escalatedToHigh++;
+        }
+      } else if (task.priority === "high" && isPast(dueDate) && !isToday(dueDate)) {
+        // High priority + past end date → count for notification
+        escalatedToHigh++;
+      }
+    }
+
+    // Count all high-priority overdue tasks for notification
+    const { data: highTasks } = await supabase
+      .from("tasks")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("completed", false)
+      .eq("priority", "high");
+
+    const overduHighCount = highTasks?.filter(t => {
+      const task = allTasks.find(at => at.id === t.id);
+      return task?.due_date && isPast(new Date(task.due_date)) && !isToday(new Date(task.due_date));
+    }).length || 0;
+
+    // Re-fetch to get accurate count after escalation
+    const { data: updatedHighTasks } = await supabase
+      .from("tasks")
+      .select("*")
+      .eq("user_id", user.id)
+      .eq("completed", false)
+      .eq("priority", "high");
+
+    const overdueHighFinal = updatedHighTasks?.filter(t => {
+      if (!t.due_date) return false;
+      const d = new Date(t.due_date);
+      d.setHours(0, 0, 0, 0);
+      return isPast(d) && !isToday(d);
+    }).length || 0;
+
+    if (overdueHighFinal > 0) {
+      setHighPriorityCount(overdueHighFinal);
+      setShowHighPriorityAlert(true);
+    }
+
+    // Reload current category after escalation
+    loadTasks();
+  };
 
   const loadTasks = async () => {
     setLoading(true);
@@ -35,9 +129,39 @@ const Tasks = () => {
     setLoading(false);
   };
 
-  const toggleTaskComplete = async (taskId: string, completed: boolean) => {
-    await supabase.from("tasks").update({ completed: !completed }).eq("id", taskId);
+  const handleCheckboxClick = (taskId: string, taskName: string, completed: boolean) => {
+    if (!completed) {
+      // Mark complete with strikethrough, then ask to delete
+      setDeleteConfirm({ open: true, taskId, taskName });
+    }
+  };
+
+  const confirmDelete = async () => {
+    // Mark complete first (shows strikethrough briefly), then delete
+    await supabase.from("tasks").update({ completed: true }).eq("id", deleteConfirm.taskId);
+    await supabase.from("tasks").delete().eq("id", deleteConfirm.taskId);
+    setDeleteConfirm({ open: false, taskId: "", taskName: "" });
+    toast.success("Task completed and removed");
     loadTasks();
+  };
+
+  const cancelDelete = async () => {
+    // Just mark as complete without deleting
+    await supabase.from("tasks").update({ completed: true }).eq("id", deleteConfirm.taskId);
+    setDeleteConfirm({ open: false, taskId: "", taskName: "" });
+    loadTasks();
+  };
+
+  const toggleTaskComplete = async (taskId: string, completed: boolean) => {
+    if (completed) {
+      // Uncheck - just toggle back
+      await supabase.from("tasks").update({ completed: false }).eq("id", taskId);
+      loadTasks();
+    } else {
+      // Check - show delete confirmation
+      const task = tasks.find(t => t.id === taskId);
+      handleCheckboxClick(taskId, task?.task_name || "", completed);
+    }
   };
 
   const deleteTask = async (taskId: string) => {
@@ -111,8 +235,12 @@ const Tasks = () => {
                           <p className={`text-xs sm:text-sm font-medium truncate ${task.completed ? "line-through text-muted-foreground" : ""}`}>
                             {task.task_name}
                           </p>
-                          {task.due_date && (
-                            <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">Due: {format(new Date(task.due_date), "MMM d, yyyy")}</p>
+                          {(task.start_date || task.due_date) && (
+                            <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">
+                              {task.start_date && `Start: ${format(new Date(task.start_date), "MMM d, yyyy")}`}
+                              {task.start_date && task.due_date && " — "}
+                              {task.due_date && `End: ${format(new Date(task.due_date), "MMM d, yyyy")}`}
+                            </p>
                           )}
                           {/* Mobile: show link below title */}
                           {task.link && (
@@ -156,6 +284,40 @@ const Tasks = () => {
         </Tabs>
 
         <AddTaskDialog open={dialogOpen} onOpenChange={setDialogOpen} category={currentCategory} onSuccess={loadTasks} />
+
+        {/* Delete confirmation dialog when checking a task */}
+        <AlertDialog open={deleteConfirm.open} onOpenChange={(open) => { if (!open) setDeleteConfirm({ open: false, taskId: "", taskName: "" }); }}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Task Completed</AlertDialogTitle>
+              <AlertDialogDescription>
+                "{deleteConfirm.taskName}" is marked as complete. Do you want to delete it from the list?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={cancelDelete}>Keep It</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDelete}>Delete</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {/* High priority notification popup */}
+        <AlertDialog open={showHighPriorityAlert} onOpenChange={setShowHighPriorityAlert}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-destructive" />
+                High Priority Tasks Alert
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                You have {highPriorityCount} high-priority task{highPriorityCount > 1 ? "s" : ""} that {highPriorityCount > 1 ? "are" : "is"} overdue. Please review and complete them as soon as possible.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogAction onClick={() => setShowHighPriorityAlert(false)}>Got it</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </AuthGuard>
   );

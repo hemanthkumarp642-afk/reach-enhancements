@@ -25,6 +25,8 @@ const isValidUrl = (str: string): boolean => {
 
 export function AddTaskDialog({ open, onOpenChange, category, onSuccess }: AddTaskDialogProps) {
   const [taskName, setTaskName] = useState("");
+  const [company, setCompany] = useState("");
+  const [role, setRole] = useState("");
   const [priority, setPriority] = useState("medium");
   const [startDate, setStartDate] = useState("");
   const [dueDate, setDueDate] = useState("");
@@ -52,6 +54,8 @@ export function AddTaskDialog({ open, onOpenChange, category, onSuccess }: AddTa
       priority,
       start_date: startDate || null,
       due_date: dueDate || null,
+      company: company || null,
+      role: role || null,
       completed: false,
     };
 
@@ -68,6 +72,8 @@ export function AddTaskDialog({ open, onOpenChange, category, onSuccess }: AddTa
     } else {
       toast.success("Task created successfully");
       setTaskName("");
+      setCompany("");
+      setRole("");
       setPriority("medium");
       setStartDate("");
       setDueDate("");
@@ -80,7 +86,7 @@ export function AddTaskDialog({ open, onOpenChange, category, onSuccess }: AddTa
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add New Task</DialogTitle>
         </DialogHeader>
@@ -95,6 +101,26 @@ export function AddTaskDialog({ open, onOpenChange, category, onSuccess }: AddTa
               required
             />
           </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label htmlFor="company">Company (Optional)</Label>
+              <Input
+                id="company"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                placeholder="e.g. Google"
+              />
+            </div>
+            <div>
+              <Label htmlFor="role">Role/Title (Optional)</Label>
+              <Input
+                id="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                placeholder="e.g. Frontend Dev"
+              />
+            </div>
+          </div>
           <div>
             <Label htmlFor="priority">Priority</Label>
             <Select value={priority} onValueChange={setPriority}>
@@ -108,23 +134,25 @@ export function AddTaskDialog({ open, onOpenChange, category, onSuccess }: AddTa
               </SelectContent>
             </Select>
           </div>
-          <div>
-            <Label htmlFor="startDate">Start Date (Optional)</Label>
-            <Input
-              id="startDate"
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-          </div>
-          <div>
-            <Label htmlFor="dueDate">End Date (Optional)</Label>
-            <Input
-              id="dueDate"
-              type="date"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
-            />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label htmlFor="startDate">Start Date (Optional)</Label>
+              <Input
+                id="startDate"
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="dueDate">End Date (Optional)</Label>
+              <Input
+                id="dueDate"
+                type="date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+              />
+            </div>
           </div>
           <div>
             <Label htmlFor="taskLink">External Link (Optional)</Label>

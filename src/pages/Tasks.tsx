@@ -224,17 +224,23 @@ const Tasks = () => {
                     {tasks.map((task) => (
                       <div
                         key={task.id}
-                        className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-lg border bg-card hover:bg-muted/30 transition-colors"
+                        className="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 rounded-lg border bg-card hover:bg-muted/30 transition-colors"
                       >
                         <Checkbox
                           checked={task.completed}
                           onCheckedChange={() => toggleTaskComplete(task.id, task.completed)}
+                          className="mt-1"
                           aria-label={`Mark "${task.task_name}" as ${task.completed ? "incomplete" : "complete"}`}
                         />
                         <div className="flex-1 min-w-0">
                           <p className={`text-xs sm:text-sm font-medium truncate ${task.completed ? "line-through text-muted-foreground" : ""}`}>
                             {task.task_name}
                           </p>
+                          {(task.company || task.role) && (
+                            <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 truncate">
+                              {task.company}{task.company && task.role ? " · " : ""}{task.role}
+                            </p>
+                          )}
                           {(task.start_date || task.due_date) && (
                             <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">
                               {task.start_date && `Start: ${format(new Date(task.start_date), "MMM d, yyyy")}`}
@@ -271,7 +277,7 @@ const Tasks = () => {
                             <span className="text-muted-foreground text-xs mr-2">—</span>
                           )}
                         </div>
-                        <Badge variant={task.priority === "high" ? "destructive" : task.priority === "medium" ? "default" : "secondary"} className="text-[10px] sm:text-xs shrink-0">
+                        <Badge variant={task.priority === "high" ? "destructive" : task.priority === "medium" ? "default" : "secondary"} className="text-[10px] sm:text-xs shrink-0 mt-0.5">
                           {task.priority}
                         </Badge>
                       </div>

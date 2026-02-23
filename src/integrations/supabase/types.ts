@@ -182,12 +182,14 @@ export type Database = {
       tasks: {
         Row: {
           category: string
+          company: string | null
           completed: boolean | null
           created_at: string
           due_date: string | null
           id: string
           link: string | null
           priority: string
+          role: string | null
           start_date: string | null
           task_name: string
           updated_at: string
@@ -195,12 +197,14 @@ export type Database = {
         }
         Insert: {
           category?: string
+          company?: string | null
           completed?: boolean | null
           created_at?: string
           due_date?: string | null
           id?: string
           link?: string | null
           priority?: string
+          role?: string | null
           start_date?: string | null
           task_name: string
           updated_at?: string
@@ -208,12 +212,14 @@ export type Database = {
         }
         Update: {
           category?: string
+          company?: string | null
           completed?: boolean | null
           created_at?: string
           due_date?: string | null
           id?: string
           link?: string | null
           priority?: string
+          role?: string | null
           start_date?: string | null
           task_name?: string
           updated_at?: string

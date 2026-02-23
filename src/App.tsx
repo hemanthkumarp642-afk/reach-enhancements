@@ -57,7 +57,13 @@ function AppLayout() {
           marginLeft: isMobile ? 0 : isCollapsed ? 'var(--sidebar-width-icon)' : 'var(--sidebar-width)',
         }}
       >
-        <header className="sticky top-0 z-50 flex h-14 items-center justify-between border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 sm:px-4 md:px-6" role="banner">
+        <header
+          className="fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-between border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 sm:px-4 md:px-6 transition-[padding-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+          style={{
+            paddingLeft: isMobile ? undefined : isCollapsed ? 'calc(var(--sidebar-width-icon) + 0.75rem)' : 'calc(var(--sidebar-width) + 0.75rem)',
+          }}
+          role="banner"
+        >
           <div className="flex items-center gap-2 sm:gap-3">
             <SidebarTrigger aria-label="Toggle navigation menu">
               <Menu className="h-5 w-5" />
@@ -71,6 +77,7 @@ function AppLayout() {
           </div>
           <ThemeToggle />
         </header>
+        <div className="h-14" /> {/* Spacer for fixed header */}
         <main className="flex-1 overflow-x-hidden" role="main">
           <Routes>
             <Route path="/" element={<Dashboard />} />

@@ -288,7 +288,7 @@ const SidebarInput = React.forwardRef<React.ElementRef<typeof Input>, React.Comp
 SidebarInput.displayName = "SidebarInput";
 
 const SidebarHeader = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(({ className, ...props }, ref) => {
-  return <div ref={ref} data-sidebar="header" className={cn("flex flex-col gap-2 p-2 my-[2px]", className)} {...props} />;
+  return <div ref={ref} data-sidebar="header" className={cn("p-2 my-[2px] flex-col flex items-start justify-center gap-[29px]", className)} {...props} />;
 });
 SidebarHeader.displayName = "SidebarHeader";
 
@@ -316,7 +316,7 @@ const SidebarContent = React.forwardRef<HTMLDivElement, React.ComponentProps<"di
     <div
       ref={ref}
       data-sidebar="content"
-      className={cn("min-h-0 flex-1 gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden flex flex-col mx-0 my-0",
+      className={cn("min-h-0 flex-1 gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden flex flex-col mx-0 my-[3.5px]",
 
       className
       )}

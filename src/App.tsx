@@ -32,15 +32,15 @@ function AppContent() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
-      </Routes>
-    );
+      </Routes>);
+
   }
 
   return (
     <SidebarProvider>
       <AppLayout />
-    </SidebarProvider>
-  );
+    </SidebarProvider>);
+
 }
 
 const ROUTE_TITLES: Record<string, string> = {
@@ -49,7 +49,7 @@ const ROUTE_TITLES: Record<string, string> = {
   "/tasks": "Tasks",
   "/revisions": "Revisions",
   "/resumes": "Resumes",
-  "/settings": "Settings",
+  "/settings": "Settings"
 };
 
 function AppLayout() {
@@ -58,23 +58,23 @@ function AppLayout() {
   const isCollapsed = state === "collapsed";
   const location = useLocation();
   const pageTitle = ROUTE_TITLES[location.pathname] || "JobTrackr";
-  
+
   return (
     <div className="flex min-h-screen w-full overflow-x-hidden">
       <AppSidebar />
       <div
         className="flex-1 flex flex-col min-w-0 w-full transition-[margin-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
         style={{
-          marginLeft: isMobile ? 0 : isCollapsed ? 'var(--sidebar-width-icon)' : 'var(--sidebar-width)',
-        }}
-      >
+          marginLeft: isMobile ? 0 : isCollapsed ? 'var(--sidebar-width-icon)' : 'var(--sidebar-width)'
+        }}>
+
         <header
-          className="fixed top-0 left-0 right-0 z-50 flex h-12 items-center justify-between border-b border-border bg-background px-3 sm:px-4 transition-[padding-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+          className="fixed top-0 left-0 right-0 z-50 flex h-12 items-center justify-between border-b border-border bg-background px-3 sm:px-4 transition-[padding-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] my-[2px]"
           style={{
-            paddingLeft: isMobile ? undefined : isCollapsed ? 'calc(var(--sidebar-width-icon) + 0.5rem)' : 'calc(var(--sidebar-width) + 0.5rem)',
+            paddingLeft: isMobile ? undefined : isCollapsed ? 'calc(var(--sidebar-width-icon) + 0.5rem)' : 'calc(var(--sidebar-width) + 0.5rem)'
           }}
-          role="banner"
-        >
+          role="banner">
+
           <div className="flex items-center gap-1.5">
             <SidebarTrigger className="h-8 w-8 flex items-center justify-center rounded-md hover:bg-accent transition-colors" aria-label="Toggle sidebar">
               <PanelLeft className="h-[18px] w-[18px] text-muted-foreground" />
@@ -105,12 +105,12 @@ function AppLayout() {
         </main>
         <Footer />
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+const App = () =>
+<QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
@@ -118,7 +118,7 @@ const App = () => (
         <AppContent />
       </BrowserRouter>
     </TooltipProvider>
-  </QueryClientProvider>
-);
+  </QueryClientProvider>;
+
 
 export default App;

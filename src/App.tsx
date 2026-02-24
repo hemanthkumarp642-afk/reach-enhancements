@@ -69,9 +69,9 @@ function AppLayout() {
         }}>
 
         <header
-          className="fixed top-0 left-0 right-0 z-50 h-12 items-center justify-between border-b border-border bg-background px-3 sm:px-4 transition-[padding-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] my-0 flex flex-row"
+          className="fixed top-0 right-0 z-50 h-12 items-center justify-between border-b border-border bg-background px-3 sm:px-4 transition-[left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] my-0 flex flex-row"
           style={{
-            paddingLeft: isMobile ? undefined : isCollapsed ? 'calc(var(--sidebar-width-icon) + 0.5rem)' : 'calc(var(--sidebar-width) + 0.5rem)'
+            left: isMobile ? 0 : isCollapsed ? 'var(--sidebar-width-icon)' : 'var(--sidebar-width)'
           }}
           role="banner">
 

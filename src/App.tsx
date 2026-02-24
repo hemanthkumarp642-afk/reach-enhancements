@@ -69,7 +69,7 @@ function AppLayout() {
         }}
       >
         <header
-          className="fixed top-0 left-0 right-0 z-50 flex h-12 items-center justify-between border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 sm:px-4 transition-[padding-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+          className="fixed top-0 left-0 right-0 z-50 flex h-12 items-center justify-between border-b border-border bg-background px-3 sm:px-4 transition-[padding-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
           style={{
             paddingLeft: isMobile ? undefined : isCollapsed ? 'calc(var(--sidebar-width-icon) + 0.5rem)' : 'calc(var(--sidebar-width) + 0.5rem)',
           }}

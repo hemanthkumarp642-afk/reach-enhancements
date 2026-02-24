@@ -7,7 +7,7 @@ import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sid
 import { AppSidebar } from "@/components/AppSidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Footer } from "@/components/layout/Footer";
-import { Briefcase, ChevronRight, PanelLeft } from "lucide-react";
+import { Briefcase, PanelLeft } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
@@ -79,7 +79,7 @@ function AppLayout() {
             <SidebarTrigger className="h-8 w-8 flex items-center justify-center rounded-md hover:bg-accent transition-colors" aria-label="Toggle sidebar">
               <PanelLeft className="h-[18px] w-[18px] text-muted-foreground" />
             </SidebarTrigger>
-            <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" />
+            
             <div className="flex items-center gap-1.5">
               <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary">
                 <Briefcase className="h-3 w-3 text-primary-foreground" />

@@ -16,6 +16,28 @@ export function useReminders() {
   const [reminders, setReminders] = useState<Reminder[]>([]);
   const [loading, setLoading] = useState(true);
   const notifiedRef = useRef<Set<string>>(new Set());
+  const hasLoadedOnce = useRef(false);
+
+  // Check localStorage for already-notified reminders today
+  const getNotifiedKey = () => {
+    const today = new Date().toISOString().split("T")[0];
+    return `jobtrackr_notified_${today}`;
+  };
+
+  const getNotifiedIds = (): Set<string> => {
+    try {
+      const stored = localStorage.getItem(getNotifiedKey());
+      return stored ? new Set(JSON.parse(stored)) : new Set();
+    } catch { return new Set(); }
+  };
+
+  const markNotified = (id: string) => {
+    const key = getNotifiedKey();
+    const ids = getNotifiedIds();
+    ids.add(id);
+    notifiedRef.current.add(id);
+    localStorage.setItem(key, JSON.stringify([...ids]));
+  };
 
   const loadReminders = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -39,14 +61,16 @@ export function useReminders() {
     setReminders(items);
     setLoading(false);
 
-    // Browser notifications for today's reminders
-    if ("Notification" in window && Notification.permission === "granted") {
+    // Browser notifications — only once per reminder per day, only on first load
+    if (!hasLoadedOnce.current && "Notification" in window && Notification.permission === "granted") {
+      hasLoadedOnce.current = true;
+      const alreadyNotified = getNotifiedIds();
       items.filter(j => isToday(new Date(j.deadline))).forEach(j => {
-        if (!notifiedRef.current.has(j.id)) {
-          notifiedRef.current.add(j.id);
+        if (!alreadyNotified.has(j.id) && !notifiedRef.current.has(j.id)) {
+          markNotified(j.id);
           new Notification("JobTrackr Reminder", {
             body: `Follow up with ${j.company} for ${j.position}`,
-            icon: "/favicon.ico",
+            icon: "/icon-192.png",
           });
         }
       });

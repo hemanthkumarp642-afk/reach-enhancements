@@ -67,7 +67,10 @@ const Dashboard = () => {
       rejected: jobs.filter(j => j.status === "rejected").length,
     });
 
-    setRecentJobs(jobs.slice(0, 5));
+    const sorted = [...jobs].sort((a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+    setRecentJobs(sorted.slice(0, 5));
     setLoading(false);
   };
 

@@ -7,7 +7,7 @@ import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sid
 import { AppSidebar } from "@/components/AppSidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Footer } from "@/components/layout/Footer";
-import { Briefcase, Menu } from "lucide-react";
+import { Briefcase, ChevronRight, PanelLeft } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
@@ -43,10 +43,21 @@ function AppContent() {
   );
 }
 
+const ROUTE_TITLES: Record<string, string> = {
+  "/": "Dashboard",
+  "/jobs": "Job Tracker",
+  "/tasks": "Tasks",
+  "/revisions": "Revisions",
+  "/resumes": "Resumes",
+  "/settings": "Settings",
+};
+
 function AppLayout() {
   const { state } = useSidebar();
   const isMobile = useIsMobile();
   const isCollapsed = state === "collapsed";
+  const location = useLocation();
+  const pageTitle = ROUTE_TITLES[location.pathname] || "JobTrackr";
   
   return (
     <div className="flex min-h-screen w-full overflow-x-hidden">
@@ -58,26 +69,27 @@ function AppLayout() {
         }}
       >
         <header
-          className="fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-between border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 sm:px-4 md:px-6 transition-[padding-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+          className="fixed top-0 left-0 right-0 z-50 flex h-12 items-center justify-between border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 sm:px-4 transition-[padding-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
           style={{
-            paddingLeft: isMobile ? undefined : isCollapsed ? 'calc(var(--sidebar-width-icon) + 0.75rem)' : 'calc(var(--sidebar-width) + 0.75rem)',
+            paddingLeft: isMobile ? undefined : isCollapsed ? 'calc(var(--sidebar-width-icon) + 0.5rem)' : 'calc(var(--sidebar-width) + 0.5rem)',
           }}
           role="banner"
         >
-          <div className="flex items-center gap-2 sm:gap-3">
-            <SidebarTrigger aria-label="Toggle navigation menu">
-              <Menu className="h-5 w-5" />
+          <div className="flex items-center gap-1.5">
+            <SidebarTrigger className="h-8 w-8 flex items-center justify-center rounded-md hover:bg-accent transition-colors" aria-label="Toggle sidebar">
+              <PanelLeft className="h-[18px] w-[18px] text-muted-foreground" />
             </SidebarTrigger>
-            <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
-                <Briefcase className="h-4 w-4 text-primary-foreground" />
+            <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" />
+            <div className="flex items-center gap-1.5">
+              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary">
+                <Briefcase className="h-3 w-3 text-primary-foreground" />
               </div>
-              <span className="font-semibold text-foreground hidden sm:inline text-sm md:text-base">JobTrackr</span>
+              <span className="text-sm font-medium text-foreground">{pageTitle}</span>
             </div>
           </div>
           <ThemeToggle />
         </header>
-        <div className="h-14" /> {/* Spacer for fixed header */}
+        <div className="h-12" /> {/* Spacer for fixed header */}
         <main className="flex-1 overflow-x-hidden" role="main">
           <Routes>
             <Route path="/" element={<Dashboard />} />

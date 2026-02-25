@@ -174,7 +174,7 @@ const Sidebar = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          "group peer hidden text-sidebar-foreground md:flex flex-col h-svh shrink-0 transition-[width] duration-[250ms] ease-in-out overflow-hidden bg-sidebar",
+          "group peer hidden text-sidebar-foreground md:flex flex-col h-svh shrink-0 sticky top-0 transition-[width] duration-[250ms] ease-in-out overflow-hidden bg-sidebar",
           state === "collapsed" && collapsible === "icon" ?
           "w-[--sidebar-width-icon]" :
           state === "collapsed" && collapsible === "offcanvas" ?

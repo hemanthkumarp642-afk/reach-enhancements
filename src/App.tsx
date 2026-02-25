@@ -58,7 +58,7 @@ function AppLayout() {
   return (
     <div className="flex min-h-screen w-full overflow-x-hidden">
       <AppSidebar />
-      <div className="flex-1 flex flex-col min-w-0 w-full">
+      <div className="flex-1 flex flex-col min-w-0 w-full min-h-screen">
         <header
           className="sticky top-0 z-50 h-12 flex items-center justify-between border-b border-border bg-background px-3 sm:px-4"
           role="banner">

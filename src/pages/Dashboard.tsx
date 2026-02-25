@@ -74,7 +74,7 @@ const Dashboard = () => {
     setLoading(false);
   };
 
-  const StatCard = ({ title, value, icon: Icon, color }: { title: string; value: number; icon: any; color: string }) => (
+  const renderStatCard = (title: string, value: number, Icon: any, color: string) => (
     <Card
       className="group cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-ring"
       tabIndex={0}
@@ -150,10 +150,10 @@ const Dashboard = () => {
             <>{[1,2,3,4].map(i => <StatSkeleton key={i} />)}</>
           ) : (
             <>
-              <StatCard title="Total Applied" value={stats.totalApplied} icon={Briefcase} color="bg-primary/10 text-primary" />
-              <StatCard title="Pending" value={stats.pending} icon={Clock} color="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400" />
-              <StatCard title="Interviews" value={stats.interviews} icon={CalendarCheck} color="bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400" />
-              <StatCard title="Rejected" value={stats.rejected} icon={XCircle} color="bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400" />
+              {renderStatCard("Total Applied", stats.totalApplied, Briefcase, "bg-primary/10 text-primary")}
+              {renderStatCard("Pending", stats.pending, Clock, "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400")}
+              {renderStatCard("Interviews", stats.interviews, CalendarCheck, "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400")}
+              {renderStatCard("Rejected", stats.rejected, XCircle, "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400")}
             </>
           )}
         </section>

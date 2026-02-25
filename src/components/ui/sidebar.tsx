@@ -174,7 +174,7 @@ const Sidebar = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          "group peer hidden text-sidebar-foreground md:flex flex-col fixed top-0 left-0 h-svh z-40 shrink-0 transition-[width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden bg-sidebar",
+          "group peer hidden text-sidebar-foreground md:flex flex-col h-svh shrink-0 transition-[width] duration-[250ms] ease-in-out overflow-hidden bg-sidebar",
           state === "collapsed" && collapsible === "icon" ?
           "w-[--sidebar-width-icon]" :
           state === "collapsed" && collapsible === "offcanvas" ?
@@ -182,7 +182,6 @@ const Sidebar = React.forwardRef<
           "w-[--sidebar-width]",
           variant !== "floating" && variant !== "inset" && (
           side === "left" ? "border-r" : "border-l"),
-
           className
         )}
         data-state={state}
@@ -193,8 +192,7 @@ const Sidebar = React.forwardRef<
 
         <div
           data-sidebar="sidebar"
-          className="flex h-full w-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow py-0">
-
+          className="flex h-full w-full flex-col bg-sidebar py-0">
           {children}
         </div>
       </div>);
@@ -288,7 +286,7 @@ const SidebarInput = React.forwardRef<React.ElementRef<typeof Input>, React.Comp
 SidebarInput.displayName = "SidebarInput";
 
 const SidebarHeader = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(({ className, ...props }, ref) => {
-  return <div ref={ref} data-sidebar="header" className={cn("p-2 items-start justify-center gap-[29px] my-[2px] py-[7px] px-[11px] flex flex-col bg-[#2f2d2f]/[0.81]", className)} {...props} />;
+  return <div ref={ref} data-sidebar="header" className={cn("flex flex-col items-start justify-center h-12 px-3 py-0", className)} {...props} />;
 });
 SidebarHeader.displayName = "SidebarHeader";
 

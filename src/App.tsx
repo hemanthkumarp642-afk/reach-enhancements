@@ -3,12 +3,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Footer } from "@/components/layout/Footer";
 import { Briefcase, PanelLeft } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
 import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import Tasks from "./pages/Tasks";
@@ -53,26 +52,15 @@ const ROUTE_TITLES: Record<string, string> = {
 };
 
 function AppLayout() {
-  const { state } = useSidebar();
-  const isMobile = useIsMobile();
-  const isCollapsed = state === "collapsed";
   const location = useLocation();
   const pageTitle = ROUTE_TITLES[location.pathname] || "JobTrackr";
 
   return (
     <div className="flex min-h-screen w-full overflow-x-hidden">
       <AppSidebar />
-      <div
-        className="flex-1 flex flex-col min-w-0 w-full transition-[margin-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
-        style={{
-          marginLeft: isMobile ? 0 : isCollapsed ? 'var(--sidebar-width-icon)' : 'var(--sidebar-width)'
-        }}>
-
+      <div className="flex-1 flex flex-col min-w-0 w-full">
         <header
-          className="fixed top-0 right-0 z-50 h-12 items-center justify-between border-b border-border bg-background px-3 sm:px-4 transition-[left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] my-0 flex flex-row"
-          style={{
-            left: isMobile ? 0 : isCollapsed ? 'var(--sidebar-width-icon)' : 'var(--sidebar-width)'
-          }}
+          className="sticky top-0 z-50 h-12 flex items-center justify-between border-b border-border bg-background px-3 sm:px-4"
           role="banner">
 
           <div className="flex items-center gap-1.5">
@@ -89,7 +77,6 @@ function AppLayout() {
           </div>
           <ThemeToggle />
         </header>
-        <div className="h-12" /> {/* Spacer for fixed header */}
         <main className="flex-1 overflow-x-hidden" role="main">
           <Routes>
             <Route path="/" element={<Dashboard />} />

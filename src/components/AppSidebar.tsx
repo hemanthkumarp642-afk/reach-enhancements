@@ -51,7 +51,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="border-r border-sidebar-border" collapsible="icon">
-      <SidebarHeader className="border-b border-sidebar-border px-4 py-3">
+      <SidebarHeader className="border-b border-sidebar-border">
         <div className="flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary shrink-0">
             <Briefcase className="h-3.5 w-3.5 text-primary-foreground" />

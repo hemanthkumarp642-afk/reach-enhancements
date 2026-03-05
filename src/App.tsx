@@ -77,20 +77,22 @@ function AppLayout() {
           </div>
           <ThemeToggle />
         </header>
-        <main className="flex-1 overflow-y-auto overflow-x-hidden" role="main">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/tasks" element={<Tasks />} />
-            <Route path="/jobs" element={<Jobs />} />
-            <Route path="/revisions" element={<Revisions />} />
-            <Route path="/resumes" element={<Resumes />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+        <main className="flex-1 overflow-y-auto overflow-x-hidden flex flex-col" role="main">
+          <div className="flex-1">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/tasks" element={<Tasks />} />
+              <Route path="/jobs" element={<Jobs />} />
+              <Route path="/revisions" element={<Revisions />} />
+              <Route path="/resumes" element={<Resumes />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+          <Footer />
         </main>
-        <Footer />
       </div>
     </div>);
 

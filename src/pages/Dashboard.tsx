@@ -127,7 +127,7 @@ const Dashboard = () => {
 
   return (
     <AuthGuard>
-      <div className="p-3 sm:p-4 md:p-6 lg:p-8 max-w-5xl mx-auto space-y-5 sm:space-y-6">
+      <div className="flex-1 p-3 sm:p-4 md:p-6 lg:p-8 max-w-5xl mx-auto w-full space-y-5 sm:space-y-6">
         {/* Hero section */}
         <section className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
           <div className="min-w-0">

@@ -56,11 +56,11 @@ function AppLayout() {
   const pageTitle = ROUTE_TITLES[location.pathname] || "JobTrackr";
 
   return (
-    <div className="flex min-h-screen w-full overflow-x-hidden">
+    <div className="flex h-screen w-full overflow-hidden">
       <AppSidebar />
-      <div className="flex-1 flex flex-col min-w-0 w-full min-h-screen">
+      <div className="flex-1 flex flex-col min-w-0 w-full h-screen overflow-hidden">
         <header
-          className="sticky top-0 z-50 h-12 flex items-center justify-between border-b border-border bg-background px-3 sm:px-4"
+          className="sticky top-0 z-50 h-12 shrink-0 flex items-center justify-between border-b border-border bg-background px-3 sm:px-4"
           role="banner">
 
           <div className="flex items-center gap-1.5">
@@ -77,7 +77,7 @@ function AppLayout() {
           </div>
           <ThemeToggle />
         </header>
-        <main className="flex-1 overflow-x-hidden" role="main">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden" role="main">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/tasks" element={<Tasks />} />

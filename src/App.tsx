@@ -77,7 +77,7 @@ function AppLayout() {
           </div>
           <ThemeToggle />
         </header>
-        <main className="flex-1 overflow-x-hidden" role="main">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden" role="main">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/tasks" element={<Tasks />} />
